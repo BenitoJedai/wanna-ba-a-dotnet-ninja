@@ -17,6 +17,8 @@ namespace DotNetNinjaQuizLib.Domain
         #endregion
 
         #region Properties
+        public bool GameOver { get; private set; }
+        
         public SortedList<int, GameLevel> GameLevels
         {
             get
@@ -63,17 +65,19 @@ namespace DotNetNinjaQuizLib.Domain
             if (answerResult.WasAnswerCorrect)
             {
                 var nextLevelKey = _activeLevelKey + 1;
-                if (_gameLevels.Count > nextLevelKey)
+                if (_gameLevels.Count >= nextLevelKey)
                 {
                     SetActiveLevel(nextLevelKey);
                 }
                 else
                 {
+                    GameOver = true;
                     //TODO: .NET Ninja reached!!! Congratulation
                 }
             }
             else
             {
+                GameOver = true;
                 //TODO: stop the game
             }
 
