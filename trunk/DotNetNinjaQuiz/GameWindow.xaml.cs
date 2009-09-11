@@ -47,14 +47,19 @@ namespace DotNetNinjaQuiz
             this.Background = ServiceLocator.Images.GetNextBackgroundImage();
         }
 
+        private void CreateBrandNewGame()
+        {
+            GameOverControl.Hide();
+            ServiceLocator.CreateNewGame();
+            SetANewBackground();
+            _answerGivenByUser = AnswerCode.AnswerNotGiven;
+            _answerCommitted = false;
+        }
         public void GetNewQuestion()
         {
             if (ServiceLocator.Game.GameOver)
             {
-                GameOverControl.Hide();
-                ServiceLocator.CreateNewGame();
-                _answerGivenByUser = AnswerCode.AnswerNotGiven;
-                _answerCommitted = false;
+                CreateBrandNewGame();
             }
 
             if ((ServiceLocator.Game.CurrentQuestion != null
