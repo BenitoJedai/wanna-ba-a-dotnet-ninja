@@ -1,106 +1,92 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Input;
-using DotNetNinjaQuizLib.Domain;
 using DotNetNinjaQuizLib.Presenters;
 using DotNetNinjaQuiz.Controls;
+using System.Windows.Media;
 
 namespace DotNetNinjaQuiz
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
-    public partial class GameWindow : Window
+    public partial class GameWindow : System.Windows.Window, GameWindowView
     {
-        #region Fields
-        private bool _answerCommitted;
-        #endregion
-
-        #region Constructors
         public GameWindow()
         {
             InitializeComponent();
-
-            SetANewBackground();
+            new GameWindowController(this, GameOverControl, _progressLadder);
+            TriggerChangeBackgroundRequest();
         }
-        #endregion
 
-        #region Events
+        #region Key down event to view event
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            CommandRelay.DoCommand(this, e);            
+            switch (Keyboard.Modifiers)
+            {
+                case ModifierKeys.Control:
+                    switch (e.Key)
+                    {
+                        case Key.B:
+                            TriggerChangeBackgroundRequest();
+                            break;
+                        case Key.N:
+                            TriggerNewQuestion();
+                            break;
+                    }
+                    break;
+                case ModifierKeys.None:
+                    switch (e.Key)
+                    {
+                        case Key.A:
+                            TriggerAnswerSelected(AnswerCode.A);
+                            break;
+                        case Key.B:
+                            TriggerAnswerSelected(AnswerCode.B);
+                            break;
+                        case Key.C:
+                            TriggerAnswerSelected(AnswerCode.C);
+                            break;
+                        case Key.D:
+                            TriggerAnswerSelected(AnswerCode.D);
+                            break;
+                        case Key.Enter:
+                            TriggerAnswerCommitted();
+                            break;
+                    }
+                    break;                
+            }
         }
         #endregion
-        #region Private methods
-        public void RandomizeQuestions()
+
+        #region GameWindowView Members
+
+        public event EventHandler NewQuestion;
+        public event EventHandler<AnswerSelectedEventArgs> AnswerSelected;
+        public event EventHandler AnswerCommitted;
+        public event EventHandler ChangeBackgroundRequest;
+
+        public virtual void TriggerNewQuestion()
         {
-            MessageBox.Show("Going to randimize all questions");
-
-            QuestionRandomizerService randomizer = new QuestionRandomizerService();
-            randomizer.ShuffleAllQuestions(ServiceLocator.Game.QuestionRepository);
-
-            MessageBox.Show("Randimization done!");
+            if (NewQuestion != null)
+                NewQuestion(null, EventArgs.Empty);
         }
 
-        public void SetANewBackground()
+        private void TriggerAnswerSelected(AnswerCode answer)
         {
-            this.Background = ServiceLocator.Images.GetNextBackgroundImage();
+            if (AnswerSelected != null)
+                AnswerSelected(null, new AnswerSelectedEventArgs { SelectedAnswer = answer });
         }
 
-        private void CreateBrandNewGame()
+        public virtual void TriggerAnswerCommitted()
         {
-            GameOverControl.Hide();
-            ServiceLocator.CreateNewGame();
-            SetANewBackground();
-            _answerGivenByUser = AnswerCode.AnswerNotGiven;
-            _answerCommitted = false;
+            if (AnswerCommitted != null)
+                AnswerCommitted(null, EventArgs.Empty);
         }
-        public void GetNewQuestion()
+        
+        public virtual void TriggerChangeBackgroundRequest()
         {
-            if (ServiceLocator.Game.GameOver)
-            {
-                CreateBrandNewGame();
-            }
-
-            if ((ServiceLocator.Game.CurrentQuestion != null
-                && _answerGivenByUser == AnswerCode.AnswerNotGiven) 
-                || ServiceLocator.Game.GameOver)
-            {
-                return; // Don't provide new question if a question is already active
-                        // But no need to tell the user...
-            }
-
-            var game = ServiceLocator.Game;
-
-            _progressLadder.AdvanceLadder();
-
-            var questionPresenter = game.GetNewQuestion(game.CurrentLevel);
-
-            _answerGivenByUser = AnswerCode.AnswerNotGiven;
-
-            SetQuestionAndAnswersTexts(questionPresenter);
-            ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.NewQuestion);
-
-            _answerCommitted = false;
+            if (ChangeBackgroundRequest != null)
+                ChangeBackgroundRequest(null, EventArgs.Empty);
         }
 
-        private void SetQuestionAndAnswersTexts(QuestionPresenter questionPresenter)
-        {
-            _questionBox.QuestionText = questionPresenter.QuestionText;
-            _answerAButton
-                .SetState(AnswerButtonState.Normal)
-                .AnswerText = "A: " + questionPresenter.AnswerA;
-            _answerBButton
-                .SetState(AnswerButtonState.Normal)
-                .AnswerText = "B: " + questionPresenter.AnswerB;
-            _answerCButton
-                .SetState(AnswerButtonState.Normal)
-                .AnswerText = "C: " + questionPresenter.AnswerC;
-            _answerDButton
-                .SetState(AnswerButtonState.Normal)
-                .AnswerText = "D: " + questionPresenter.AnswerD;
-        }
-        private AnswerButton GetButton(AnswerCode answerCode)
+        public AnswerButton Button(AnswerCode answerCode)
         {
             switch (answerCode)
             {
@@ -111,68 +97,25 @@ namespace DotNetNinjaQuiz
                 case AnswerCode.C:
                     return _answerCButton;
                 case AnswerCode.D:
-                    return _answerDButton;                
+                    return _answerDButton;
                 default:
                     throw new ApplicationException("Unknown answer code..");
             }
         }
 
-        private AnswerCode _answerGivenByUser = AnswerCode.AnswerNotGiven;
-
-        public void AnswerQuestion(AnswerCode answerCode)
+        public QuestionBox QuestionBox
         {
-            ResetAllAnswers();
-
-            _answerGivenByUser = answerCode;
-            GetButton(answerCode).SetState(AnswerButtonState.Selected);
-            ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.ButtonPress);
+            get { return _questionBox; }
         }
 
-        private void ResetAllAnswers()
+        public Brush BackgroundImage
         {
-            GetButton(AnswerCode.A).SetState(AnswerButtonState.Normal);
-            GetButton(AnswerCode.B).SetState(AnswerButtonState.Normal);
-            GetButton(AnswerCode.C).SetState(AnswerButtonState.Normal);
-            GetButton(AnswerCode.D).SetState(AnswerButtonState.Normal);
-        }
-
-        public void CommitAnswer()
-        {
-            var currentQuestion = ServiceLocator.Game.CurrentQuestion;
-            if (currentQuestion != null
-                && _answerGivenByUser != AnswerCode.AnswerNotGiven
-                && !_answerCommitted)
+            set
             {
-                _answerCommitted = true;
-                var commitAnswerResult = ServiceLocator.Game.CommitAnswer(_answerGivenByUser);
-
-                if (commitAnswerResult.WasAnswerCorrect)
-                {
-                    GetButton(commitAnswerResult.UserAnswer).SetState(AnswerButtonState.CorrectAnswer);
-                    ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.QuestionCommitted);
-                }
-                else
-                {
-                    GetButton(commitAnswerResult.UserAnswer).SetState(AnswerButtonState.WrongAnswer);
-                    GetButton(commitAnswerResult.CorrectAnswer).SetState(AnswerButtonState.CorrectAnswer);
-                }
-
-                if (ServiceLocator.Game.GameOver)
-                {
-                    if(ServiceLocator.Game.CurrentLevel.DifficultySelector.GetLevel() == DifficultyLevel.Easy)
-                        ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.Laughter);
-                    else
-                        ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.Applause);
-
-                    GameOverControl.Show(ServiceLocator.Game.CurrentLevel.Label);
-                }
+                Background = value;
             }
         }
 
-        private void GameOverControl_CancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            GameOverControl.Hide();
-        }  
         #endregion
     }
 }
