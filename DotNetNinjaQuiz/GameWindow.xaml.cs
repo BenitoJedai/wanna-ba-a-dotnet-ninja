@@ -49,6 +49,12 @@ namespace DotNetNinjaQuiz
 
         public void GetNewQuestion()
         {
+            if (ServiceLocator.Game.GameOver)
+            {
+                GameOverControl.Hide();
+                return;
+            }
+
             if ((ServiceLocator.Game.CurrentQuestion != null
                 && _answerGivenByUser == AnswerCode.AnswerNotGiven) 
                 || ServiceLocator.Game.GameOver)
@@ -126,8 +132,18 @@ namespace DotNetNinjaQuiz
                     GetButton(commitAnswerResult.UserAnswer).SetState(AnswerButtonState.WrongAnswer);
                     GetButton(commitAnswerResult.CorrectAnswer).SetState(AnswerButtonState.CorrectAnswer);
                 }
+
+                if (ServiceLocator.Game.GameOver)
+                {
+                    GameOverControl.Show(ServiceLocator.Game.CurrentLevel.Label);
+                }
             }
         }
+
+        private void GameOverControl_CancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            GameOverControl.Hide();
+        }  
         #endregion
     }
 }
