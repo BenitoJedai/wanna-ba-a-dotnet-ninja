@@ -27,8 +27,27 @@ namespace DotNetNinjaQuiz.Controls
 
         public void Show(string levelName)
         {
+            _youAreA.Text = getYouAreAText(levelName);
             _levelName.Text = levelName;
             Visibility = Visibility.Visible;
+        }
+
+        private string getYouAreAText(string levelName)
+        {
+            return StartsWithVowel(levelName) ?
+                "You are an" :
+                "You are a";
+        }
+
+        private bool StartsWithVowel(string text)
+        {
+            char[] vowels = new[] { 'A', 'E', 'I', 'O', 'U', 'Y' };
+            for (int i = 0; i < vowels.Length; i++)
+            {
+                if (text[0] == vowels[i])
+                    return true;
+            }
+            return false;
         }
 
         public void Hide()
