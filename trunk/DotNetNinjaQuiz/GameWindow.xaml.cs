@@ -49,8 +49,9 @@ namespace DotNetNinjaQuiz
 
         public void GetNewQuestion()
         {
-            if (ServiceLocator.Game.CurrentQuestion != null
-                && _answerGivenByUser == AnswerCode.AnswerNotGiven)
+            if ((ServiceLocator.Game.CurrentQuestion != null
+                && _answerGivenByUser == AnswerCode.AnswerNotGiven) 
+                || ServiceLocator.Game.GameOver)
             {
                 return; // Don't provide new question if a question is already active
                         // But no need to tell the user...
