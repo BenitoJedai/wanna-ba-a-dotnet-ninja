@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DotNetNinjaQuizLib.Domain;
 using System.Configuration;
+using System.IO;
 
 namespace DotNetNinjaQuiz
 {
@@ -26,7 +27,9 @@ namespace DotNetNinjaQuiz
         {
             if (Game != null)
                 Game.Dispose();
-            Game = new GameController(ConfigurationSettings.AppSettings["questionsDatabase"]);
+
+            var dbFile = new FileInfo(ConfigurationSettings.AppSettings["questionsDatabase"]);
+            Game = new GameController(dbFile.FullName);
         }
     }
 }
