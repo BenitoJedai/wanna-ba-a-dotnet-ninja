@@ -99,7 +99,7 @@ namespace DotNetNinjaQuiz
                 case AnswerCode.C:
                     return _answerCButton;
                 case AnswerCode.D:
-                    return _answerDButton;
+                    return _answerDButton;                
                 default:
                     throw new ApplicationException("Unknown answer code..");
             }
@@ -109,6 +109,13 @@ namespace DotNetNinjaQuiz
 
         public void AnswerQuestion(AnswerCode answerCode)
         {
+            var answers = (AnswerCode[]) Enum.GetValues(typeof(AnswerCode));
+            Array.ForEach(answers, answer => 
+            { 
+                if(answer != AnswerCode.AnswerNotGiven)
+                    GetButton(answer).SetState(AnswerButtonState.Normal); 
+            });
+
             _answerGivenByUser = answerCode;
             GetButton(answerCode).SetState(AnswerButtonState.Selected);
         }
