@@ -7,6 +7,7 @@
                 Background="Black"
                 CornerRadius="10,10,10,10" Margin="10,5,10,5">
             
+            <Viewbox>
                 <TextBlock x:Name="_questionText" 
                            Text="" 
                            HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -14,7 +15,7 @@
                            FontFamily="Verdana" Foreground="White" 
                            TextWrapping="Wrap"
                            Margin="10,0"/>
-            
+            </Viewbox>
         </Border>
     </Grid>
 </UserControl>

@@ -47,6 +47,7 @@
             <quizControls:AnswerButton x:Name="_answerBButton" Grid.Row="1" Grid.Column="1" />
             <quizControls:AnswerButton x:Name="_answerCButton" Grid.Row="2" Grid.Column="0" />
             <quizControls:AnswerButton x:Name="_answerDButton" Grid.Row="2" Grid.Column="1" />
+                
         </Grid>
     </Grid>
 </Window>
