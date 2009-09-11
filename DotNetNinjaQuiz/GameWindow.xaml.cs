@@ -52,7 +52,9 @@ namespace DotNetNinjaQuiz
             if (ServiceLocator.Game.GameOver)
             {
                 GameOverControl.Hide();
-                return;
+                ServiceLocator.CreateNewGame();
+                _answerGivenByUser = AnswerCode.AnswerNotGiven;
+                _answerCommitted = false;
             }
 
             if ((ServiceLocator.Game.CurrentQuestion != null
@@ -71,6 +73,13 @@ namespace DotNetNinjaQuiz
 
             _answerGivenByUser = AnswerCode.AnswerNotGiven;
 
+            SetQuestionAndAnswersTexts(questionPresenter);
+
+            _answerCommitted = false;
+        }
+
+        private void SetQuestionAndAnswersTexts(QuestionPresenter questionPresenter)
+        {
             _questionBox.QuestionText = questionPresenter.QuestionText;
             _answerAButton
                 .SetState(AnswerButtonState.Normal)
@@ -84,10 +93,7 @@ namespace DotNetNinjaQuiz
             _answerDButton
                 .SetState(AnswerButtonState.Normal)
                 .AnswerText = "D: " + questionPresenter.AnswerD;
-
-            _answerCommitted = false;
         }
-
         private AnswerButton GetButton(AnswerCode answerCode)
         {
             switch (answerCode)
@@ -109,15 +115,18 @@ namespace DotNetNinjaQuiz
 
         public void AnswerQuestion(AnswerCode answerCode)
         {
-            var answers = (AnswerCode[]) Enum.GetValues(typeof(AnswerCode));
-            Array.ForEach(answers, answer => 
-            { 
-                if(answer != AnswerCode.AnswerNotGiven)
-                    GetButton(answer).SetState(AnswerButtonState.Normal); 
-            });
+            ResetAllAnswers();
 
             _answerGivenByUser = answerCode;
             GetButton(answerCode).SetState(AnswerButtonState.Selected);
+        }
+
+        private void ResetAllAnswers()
+        {
+            GetButton(AnswerCode.A).SetState(AnswerButtonState.Normal);
+            GetButton(AnswerCode.B).SetState(AnswerButtonState.Normal);
+            GetButton(AnswerCode.C).SetState(AnswerButtonState.Normal);
+            GetButton(AnswerCode.D).SetState(AnswerButtonState.Normal);
         }
 
         public void CommitAnswer()
