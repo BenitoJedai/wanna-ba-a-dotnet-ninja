@@ -10,12 +10,11 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        
+        </Grid.RowDefinitions>        
             
-            <TextBlock Text="The .Net Ninja Quiz" 
-                       FontFamily="Verdana" FontSize="24" FontWeight="Bold"
-                       Grid.Row="0" Padding="20,15,0,10" />
+        <TextBlock Text="The .Net Ninja Quiz" 
+                   FontFamily="Verdana" FontSize="24" FontWeight="Bold"
+                   Grid.Row="0" Padding="20,15,0,10" />
 
 
         <Grid Grid.Row="1">
@@ -49,5 +48,12 @@
             <quizControls:AnswerButton x:Name="_answerDButton" Grid.Row="2" Grid.Column="1" />
                 
         </Grid>
+
+
+        <quizControls:GameOverDialog HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                                     VerticalAlignment="Stretch" 
+                                     Width="Auto" Height="Auto" Visibility="Collapsed"
+                                     x:Name="GameOverControl" 
+                                     Grid.RowSpan="4" />
     </Grid>
 </Window>

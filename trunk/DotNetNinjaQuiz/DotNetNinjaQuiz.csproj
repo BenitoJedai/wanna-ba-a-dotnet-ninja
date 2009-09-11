@@ -72,6 +72,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\GameOverDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\GameProgressLadder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,6 +104,9 @@
     </Compile>
     <Compile Include="Controls\GameLevelSpoke.xaml.cs">
       <DependentUpon>GameLevelSpoke.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GameOverDialog.xaml.cs">
+      <DependentUpon>GameOverDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\GameProgressLadder.xaml.cs">
       <DependentUpon>GameProgressLadder.xaml</DependentUpon>
