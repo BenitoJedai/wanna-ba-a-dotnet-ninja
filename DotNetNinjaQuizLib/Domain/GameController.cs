@@ -62,7 +62,15 @@ namespace DotNetNinjaQuizLib.Domain
 
             if (answerResult.WasAnswerCorrect)
             {
-                SetActiveLevel(_activeLevelKey + 1);
+                var nextLevelKey = _activeLevelKey + 1;
+                if (_gameLevels.Count > nextLevelKey)
+                {
+                    SetActiveLevel(nextLevelKey);
+                }
+                else
+                {
+                    //TODO: .NET Ninja reached!!! Congratulation
+                }
             }
             else
             {

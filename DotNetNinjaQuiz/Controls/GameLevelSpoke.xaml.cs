@@ -70,7 +70,7 @@ namespace DotNetNinjaQuiz.Controls
         }
 
         private bool _active;
-        public bool Active
+        public bool Active  
         {
             get
             {
