@@ -74,6 +74,7 @@ namespace DotNetNinjaQuiz
             _answerGivenByUser = AnswerCode.AnswerNotGiven;
 
             SetQuestionAndAnswersTexts(questionPresenter);
+            ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.NewQuestion);
 
             _answerCommitted = false;
         }
@@ -119,6 +120,7 @@ namespace DotNetNinjaQuiz
 
             _answerGivenByUser = answerCode;
             GetButton(answerCode).SetState(AnswerButtonState.Selected);
+            ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.ButtonPress);
         }
 
         private void ResetAllAnswers()
@@ -132,7 +134,7 @@ namespace DotNetNinjaQuiz
         public void CommitAnswer()
         {
             var currentQuestion = ServiceLocator.Game.CurrentQuestion;
-            if (currentQuestion != null 
+            if (currentQuestion != null
                 && _answerGivenByUser != AnswerCode.AnswerNotGiven
                 && !_answerCommitted)
             {
@@ -142,6 +144,7 @@ namespace DotNetNinjaQuiz
                 if (commitAnswerResult.WasAnswerCorrect)
                 {
                     GetButton(commitAnswerResult.UserAnswer).SetState(AnswerButtonState.CorrectAnswer);
+                    ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.QuestionCommitted);
                 }
                 else
                 {
@@ -151,6 +154,11 @@ namespace DotNetNinjaQuiz
 
                 if (ServiceLocator.Game.GameOver)
                 {
+                    if(ServiceLocator.Game.CurrentLevel.DifficultySelector.GetLevel() == DifficultyLevel.Easy)
+                        ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.Laughter);
+                    else
+                        ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.Applause);
+
                     GameOverControl.Show(ServiceLocator.Game.CurrentLevel.Label);
                 }
             }
