@@ -9,13 +9,20 @@ namespace DotNetNinjaQuiz
 {
     static class ServiceLocator
     {
-        public static GameController Game { get; set; }
-        public static gfx.ImageService Images { get; set; }
+        public static GameController Game { get; private set; }
+        public static gfx.ImageService Images { get; private set; }
 
         static ServiceLocator()
         {
-            Game = new GameController(ConfigurationSettings.AppSettings["questionsDatabase"]);
+            CreateNewGame();
             Images = new gfx.ImageService();
+        }
+
+        public static void CreateNewGame()
+        {
+            if (Game != null)
+                Game.Dispose();
+            Game = new GameController(ConfigurationSettings.AppSettings["questionsDatabase"]);
         }
     }
 }
