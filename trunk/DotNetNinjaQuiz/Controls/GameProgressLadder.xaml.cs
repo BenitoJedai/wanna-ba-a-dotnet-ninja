@@ -29,6 +29,7 @@ namespace DotNetNinjaQuiz.Controls
 
         private void PopulateSpokes()
         {
+            _gameLevelStack.Children.Clear();
             var gameLevels = ServiceLocator.Game.GameLevels.Reverse();
 
             foreach (var item in gameLevels)
@@ -45,6 +46,9 @@ namespace DotNetNinjaQuiz.Controls
             _gameLevelStack.Children.Add(spoke);
         }
 
-        
+        public void AdvanceLadder()
+        {
+            PopulateSpokes();
+        }
     }
 }

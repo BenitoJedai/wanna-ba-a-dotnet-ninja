@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DotNetNinjaQuizLib.Domain;
 using DotNetNinjaQuizLib.Presenters;
 using DotNetNinjaQuiz.Controls;
@@ -22,6 +12,10 @@ namespace DotNetNinjaQuiz
     /// </summary>
     public partial class GameWindow : Window
     {
+        #region Fields
+        private bool _answerCommitted;
+        #endregion
+
         #region Constructors
         public GameWindow()
         {
@@ -64,7 +58,7 @@ namespace DotNetNinjaQuiz
 
             var game = ServiceLocator.Game;
 
-            MessageBox.Show("Current level: " + game.CurrentLevel.Label);
+            _progressLadder.AdvanceLadder();
 
             var questionPresenter = game.GetNewQuestion(game.CurrentLevel);
 
@@ -83,6 +77,8 @@ namespace DotNetNinjaQuiz
             _answerDButton
                 .SetState(AnswerButtonState.Normal)
                 .AnswerText = "D: " + questionPresenter.AnswerD;
+
+            _answerCommitted = false;
         }
 
         private AnswerButton GetButton(AnswerCode answerCode)
@@ -113,8 +109,11 @@ namespace DotNetNinjaQuiz
         public void CommitAnswer()
         {
             var currentQuestion = ServiceLocator.Game.CurrentQuestion;
-            if (currentQuestion != null && _answerGivenByUser != AnswerCode.AnswerNotGiven)
+            if (currentQuestion != null 
+                && _answerGivenByUser != AnswerCode.AnswerNotGiven
+                && !_answerCommitted)
             {
+                _answerCommitted = true;
                 var commitAnswerResult = ServiceLocator.Game.CommitAnswer(_answerGivenByUser);
 
                 if (commitAnswerResult.WasAnswerCorrect)
