@@ -25,7 +25,8 @@
                 <Viewbox>
                     <StackPanel Orientation="Vertical">
                         
-                        <TextBlock Text="You are a" 
+                        <TextBlock x:Name="_youAreA"
+                                   Text="You are a" 
                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
                                    FontWeight="Bold" FontSize="20" 
                                    FontFamily="Verdana" Foreground="Black" 
