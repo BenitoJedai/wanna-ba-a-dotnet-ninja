@@ -10,12 +10,16 @@ namespace DotNetNinjaQuiz
     static class ServiceLocator
     {
         public static GameController Game { get; private set; }
+        
         public static gfx.ImageService Images { get; private set; }
+        
+        public static gfx.SoundService Sound{ get; private set; }
 
         static ServiceLocator()
         {
             CreateNewGame();
             Images = new gfx.ImageService();
+            Sound = new gfx.SoundService();
         }
 
         public static void CreateNewGame()

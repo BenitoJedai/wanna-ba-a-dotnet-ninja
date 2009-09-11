@@ -115,6 +115,8 @@
       <DependentUpon>QuestionBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="gfx\ImageService.cs" />
+    <Compile Include="gfx\SoundEffect.cs" />
+    <Compile Include="gfx\SoundService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -170,6 +172,23 @@
     <Resource Include="gfx\bg26.JPG" />
     <Resource Include="gfx\bg27.JPG" />
     <Resource Include="gfx\bg28.JPG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="gfx\sounds\applause-2.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gfx\sounds\crowd_laugh_1.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gfx\sounds\sound101.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gfx\sounds\sound106.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="gfx\sounds\sound63.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
