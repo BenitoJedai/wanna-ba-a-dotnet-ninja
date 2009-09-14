@@ -66,6 +66,7 @@
     <Compile Include="Commands\IConsoleCommandExtensions.cs" />
     <Compile Include="Commands\ListRunningGameSessions.cs" />
     <Compile Include="Commands\QuitProgramCommand.cs" />
+    <Compile Include="Commands\RandomizerTestCommand.cs" />
     <Compile Include="ConsoleExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

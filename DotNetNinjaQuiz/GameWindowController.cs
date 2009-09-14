@@ -153,6 +153,7 @@ namespace DotNetNinjaQuiz
 
         private void RandomizeQuestions()
         {
+            
             var randomizer = new QuestionRandomizerService();
             randomizer.ShuffleAllQuestions(ServiceLocator.Game.QuestionRepository);
         }
