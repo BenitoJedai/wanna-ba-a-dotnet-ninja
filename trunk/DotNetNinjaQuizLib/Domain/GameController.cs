@@ -44,6 +44,27 @@ namespace DotNetNinjaQuizLib.Domain
             }
         }
 
+        public GameLevel HighestCompletedLevel
+        {
+            get // man, this was ugly! :(
+            {
+                const int outOfBounds = -1;
+                var levelInfo = new { GameLevel = new GameLevel(), sortKey = outOfBounds };                
+
+                foreach (var anotherLevel in GameLevels)
+                {
+                    if (anotherLevel.Value.IsCompleted
+                        && anotherLevel.Key > levelInfo.sortKey)
+                    {
+                        levelInfo = new { GameLevel = anotherLevel.Value, sortKey = anotherLevel.Key };
+                    }
+                }
+
+                if (levelInfo.sortKey == outOfBounds)
+                    return null;
+                return levelInfo.GameLevel;
+            }
+        }
         public QuestionPresenter CurrentQuestion
         {
             get;
@@ -72,13 +93,14 @@ namespace DotNetNinjaQuizLib.Domain
                 else
                 {
                     GameOver = true;
-                    //TODO: .NET Ninja reached!!! Congratulation
+                    this.CurrentLevel.IsCompleted = true;
+                    //.NET Ninja reached!!! Congratulation
                 }
             }
             else
             {
                 GameOver = true;
-                //TODO: stop the game
+                //stop the game
             }
 
             return answerResult;

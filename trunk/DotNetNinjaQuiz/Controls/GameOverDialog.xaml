@@ -42,7 +42,8 @@
                                    Margin="10,0"/>
 
 
-                        <TextBlock Text="!!!" 
+                        <TextBlock x:Name="_line3" 
+                                   Text="!!!" 
                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
                                    FontWeight="Bold" FontSize="20" 
                                    FontFamily="Verdana" Foreground="Black" 

@@ -27,8 +27,16 @@ namespace DotNetNinjaQuiz.Controls
 
         public void Show(string levelName)
         {
-            _youAreA.Text = getYouAreAText(levelName);
-            _levelName.Text = levelName;
+            Show(getYouAreAText(levelName),
+                levelName,
+                "!!!");
+        }
+
+        public void Show(string line1, string line2, string line3)
+        {
+            _youAreA.Text = line1;
+            _levelName.Text = line2;
+            _line3.Text = line3;
             Visibility = Visibility.Visible;
         }
 
