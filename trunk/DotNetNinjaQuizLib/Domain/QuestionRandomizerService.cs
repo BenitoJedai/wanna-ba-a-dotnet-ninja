@@ -22,14 +22,14 @@ namespace DotNetNinjaQuizLib.Domain
 
         private void ShuffleQuestions(IEnumerable<QuizQuestion> questions)
         {
-            Random random = new Random();
 
             foreach (var question in questions)
-            {
-                question.ShuffleIndex = random.Next(100);                
-            }            
+                question.ShuffleIndex = NextRandom();            
         }
 
-        
+        private static int NextRandom()
+        {
+            return BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0);
+        }
     }
 }

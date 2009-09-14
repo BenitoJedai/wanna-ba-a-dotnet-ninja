@@ -14,10 +14,11 @@ namespace QuizManager
         public CommandManager()
         {
             _commandDictionary = new Dictionary<string, IConsoleCommand>();
-            
+
             AddCommand("1", new ListRunningGameSessions());
             AddCommand("2", new GetQuestionsSummaryCommand());
-            AddCommand("3", new QuitProgramCommand());
+            AddCommand("3", new RandomizerTestCommand());
+            AddCommand("4", new QuitProgramCommand());
         }
 
         private void AddCommand(string commandKey,  IConsoleCommand command)
