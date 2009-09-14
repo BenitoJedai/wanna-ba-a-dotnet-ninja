@@ -68,7 +68,11 @@ namespace DotNetNinjaQuiz
             else
                 ServiceLocator.Sound.PlayEffect(gfx.SoundEffect.Applause);
 
-            _gameOverView.Show(ServiceLocator.Game.CurrentLevel.Label);
+            var reachedLevel = ServiceLocator.Game.HighestCompletedLevel;
+            if (reachedLevel != null)
+                _gameOverView.Show(reachedLevel.Label);
+            else
+                _gameOverView.Show("Are you sure you", "are a developer at all", "???");
         }
 
         private bool ReadyToCommitAnswer
