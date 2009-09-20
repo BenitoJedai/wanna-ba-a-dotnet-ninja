@@ -18,6 +18,7 @@ namespace DotNetNinjaQuiz
             _gameProgressView = gameProgressView;
             _gameOverView = gameOverView;
             _gameView = view;
+            RandomizeQuestions();
             SubscribeToViewEvents();
         }
 
